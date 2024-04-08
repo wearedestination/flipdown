@@ -27,16 +27,10 @@ export class FlipDown {
     private prevClockValuesAsString: string[];
     private opts: Record<string, any>;
 
-    constructor(uts, el = "flipdown", opt = {}) {
+    constructor(uts: number, el: string | HTMLElement = "#flipdown", opt = {}) {
         // If uts is not specified
         if (typeof uts !== "number") {
             throw new Error(`FlipDown: Constructor expected unix timestamp, got ${typeof uts} instead.`);
-        }
-
-        // If opt is specified, but not el
-        if (typeof el === "object") {
-            opt = el;
-            el = "flipdown";
         }
 
         // FlipDown version
@@ -58,7 +52,11 @@ export class FlipDown {
         this.hasEndedCallback = null;
 
         // FlipDown DOM element
-        this.element = document.getElementById(el);
+        if (typeof el === 'string') {
+            this.element = document.querySelector(el);
+        } else {
+            this.element = el;
+        }
 
         // Rotor DOM elements
         this.rotors = [];
