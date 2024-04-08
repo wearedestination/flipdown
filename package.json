@@ -13,18 +13,28 @@
     "license": "MIT",
     "author": "Peter Butcher <pbutcher93@gmail.com>",
     "type": "module",
-    "main": "dist/flipdown.js",
+    "main": "dist/flipdown.mjs",
+    "types": "dist/flipdown.d.ts",
     "files": [
         "dist"
     ],
     "scripts": {
         "build": "tsc",
         "prettier:check": "prettier --check .",
-        "prettier:write": "prettier --write ."
+        "prettier:write": "prettier --write .",
+        "lint:es": "eslint src",
+        "type-check": "tsc --noEmit"
     },
     "prettier": "@destination/prettier-config",
+    "eslintConfig": {
+        "extends": [
+            "@destination/eslint-config"
+        ]
+    },
     "devDependencies": {
+        "@destination/eslint-config": "^1.4.2",
         "@destination/prettier-config": "^4.0.0",
+        "eslint": "^8.57.0",
         "prettier": "^3.2.5",
         "typescript": "^5.4.4"
     }
