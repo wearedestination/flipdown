@@ -4,8 +4,7 @@
 
 ⏰ A lightweight and performant flip styled countdown clock.
 
-![NPM Version](https://img.shields.io/npm/v/flipdown?style=flat-square)
-![NPM Downloads](https://img.shields.io/npm/dt/flipdown?style=flat-square)
+Forked by Destination for use as an ES module
 
 ## Features
 
@@ -15,65 +14,22 @@
 -   🎨 Themeable - Choose from built-in themes, or add your own
 -   🌍 i18n - Customisable headings for your language
 
-## Example
-
-Example live at: https://pbutcher.uk/flipdown/
-
-Remix FlipDown on CodePen: https://codepen.io/PButcher/pen/dzvMzZ
-
 ## Basic Usage
 
-To get started, either clone this repo or install with `npm install flipdown` or `yarn add flipdown`.
+To get started, install with `npm install @destination/flipdown` or `yarn add @destination/flipdown`.
 
 For basic usage, FlipDown takes a unix timestamp (in seconds) as an argument.
 
-```javascript
-new FlipDown(1538137672).start();
-```
+```js
+import { FlipDown } from "@destination/flipdown";
+import "@destination/flipdown/dist/dark.css";
+import "@destination/flipdown/dist/flipdown.css";
 
-Include the [CSS and JS](https://github.com/PButcher/flipdown/tree/master/dist) in `<head>` and include the following line in your HTML.
+new FlipDown(1538137672, '#flipdown').start();
+```
 
 ```html
 <div id="flipdown" class="flipdown"></div>
-```
-
-See a full example [here](https://github.com/PButcher/flipdown/tree/master/example).
-
-## Multiple Instances
-
-To use multiple instances of FlipDown on the same page, specify a DOM element ID as the second argument in FlipDown's constructor:
-
-```javascript
-new FlipDown(1588017373, "registerBy").start();
-new FlipDown(1593561600, "eventStart").start();
-```
-
-```html
-<div id="registerBy" class="flipdown"></div>
-<div id="eventStart" class="flipdown"></div>
-```
-
-## Themes
-
-FlipDown comes with 2 themes as standard:
-
--   dark [default]
--   light
-
-To change the theme, you can supply the `theme` property in the `opt` object in the constructor with the theme name as a string:
-
-```javascript
-{
-    theme: "light";
-}
-```
-
-For example, to instantiate FlipDown using the light theme instead:
-
-```javascript
-new FlipDown(1538137672, {
-    theme: "light"
-}).start();
 ```
 
 ### Custom Themes
@@ -94,7 +50,7 @@ You can add your own rotor group headings by passing an array as part of the `op
 Suggested use is for i18n. Usage as follows:
 
 ```javascript
-new FlipDown(1538137672, {
+new FlipDown(1538137672, '#flipdown', {
     headings: ["Nap", "Óra", "Perc", "Másodperc"]
 }).start();
 ```
@@ -117,14 +73,14 @@ The unix timestamp to count down to (in seconds).
 
 ##### `[el]`
 
-**Optional**  
+**Optional**
 Type: _string_ (default: `flipdown`)
 
 The DOM element ID to attach this FlipDown instance to. Defaults to `flipdown`.
 
 ##### `[opts]`
 
-**Optional**  
+**Optional**
 Type: _object_ (default: `{}`)
 
 Optionally specify additional configuration settings. Currently supported settings include:
@@ -151,7 +107,7 @@ Function to execute once the countdown has ended.
 #### Example
 
 ```javascript
-var flipdown = new FlipDown(1538137672)
+var flipdown = new FlipDown(1538137672, '#flipdown')
 
     // Start the countdown
     .start()
