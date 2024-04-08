@@ -1,0 +1,23 @@
+{
+    "include": ["src"],
+    "compilerOptions": {
+        // Enable latest features
+        "lib": ["ESNext", "DOM"],
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleDetection": "force",
+        "allowJs": true,
+
+        // Bundler mode
+        "moduleResolution": "bundler",
+        "verbatimModuleSyntax": true,
+
+        "skipLibCheck": true,
+
+        "declaration": true,
+        "sourceMap": true,
+        "outDir": "dist",
+
+        "pretty": true
+    }
+}

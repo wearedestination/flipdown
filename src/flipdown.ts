@@ -7,6 +7,26 @@
  * @param {object} opt - Optional configuration settings
  **/
 export class FlipDown {
+    private version: string;
+    private initialised: boolean;
+    private now: number;
+    private epoch: number;
+    private countdownEnded: boolean;
+    private hasEndedCallback: Function | null;
+    private element: HTMLElement | null;
+    private rotors: HTMLElement[];
+    private rotorLeafFront: HTMLElement[];
+    private rotorLeafRear: HTMLElement[];
+    private rotorTops: HTMLElement[];
+    private rotorBottoms: HTMLElement[];
+    private countdown: number;
+    private daysRemaining: number;
+    private clockValues: Record<string, number>;
+    private clockStrings: Record<string, string>;
+    private clockValuesAsString: string[];
+    private prevClockValuesAsString: string[];
+    private opts: Record<string, any>;
+
     constructor(uts, el = "flipdown", opt = {}) {
         // If uts is not specified
         if (typeof uts !== "number") {
@@ -173,31 +193,32 @@ export class FlipDown {
      * @author PButcher
      **/
     _init() {
+        let i;
         this.initialised = true;
 
         // Check whether countdown has ended and calculate how many digits the day counter needs
         if (this._hasCountdownEnded()) {
-            this.daysremaining = 0;
+            this.daysRemaining = 0;
         } else {
-            this.daysremaining = Math.floor((this.epoch - this.now) / 86400).toString().length;
+            this.daysRemaining = Math.floor((this.epoch - this.now) / 86400).toString().length;
         }
-        var dayRotorCount = this.daysremaining <= 2 ? 2 : this.daysremaining;
+        var dayRotorCount = this.daysRemaining <= 2 ? 2 : this.daysRemaining;
 
         // Create and store rotors
-        for (var i = 0; i < dayRotorCount + 6; i++) {
+        for (i = 0; i < dayRotorCount + 6; i++) {
             this.rotors.push(this._createRotor(0));
         }
 
         // Create day rotor group
-        var dayRotors = [];
-        for (var i = 0; i < dayRotorCount; i++) {
+        const dayRotors = [];
+        for (i = 0; i < dayRotorCount; i++) {
             dayRotors.push(this.rotors[i]);
         }
         this.element.appendChild(this._createRotorGroup(dayRotors, 0));
 
         // Create other rotor groups
-        var count = dayRotorCount;
-        for (var i = 0; i < 3; i++) {
+        let count = dayRotorCount;
+        for (i = 0; i < 3; i++) {
             var otherRotors = [];
             for (var j = 0; j < 2; j++) {
                 otherRotors.push(this.rotors[count]);
@@ -209,8 +230,8 @@ export class FlipDown {
         // Store and convert rotor nodelists to arrays
         this.rotorLeafFront = Array.prototype.slice.call(this.element.getElementsByClassName("rotor-leaf-front"));
         this.rotorLeafRear = Array.prototype.slice.call(this.element.getElementsByClassName("rotor-leaf-rear"));
-        this.rotorTop = Array.prototype.slice.call(this.element.getElementsByClassName("rotor-top"));
-        this.rotorBottom = Array.prototype.slice.call(this.element.getElementsByClassName("rotor-bottom"));
+        this.rotorTops = Array.prototype.slice.call(this.element.getElementsByClassName("rotor-top"));
+        this.rotorBottoms = Array.prototype.slice.call(this.element.getElementsByClassName("rotor-bottom"));
 
         // Set initial values;
         this._tick();
@@ -243,21 +264,21 @@ export class FlipDown {
      * @param {number} v - Initial rotor value
      **/
     _createRotor(v = 0) {
-        var rotor = document.createElement("div");
-        var rotorLeaf = document.createElement("div");
-        var rotorLeafRear = document.createElement("figure");
-        var rotorLeafFront = document.createElement("figure");
-        var rotorTop = document.createElement("div");
-        var rotorBottom = document.createElement("div");
+        const rotor = document.createElement("div");
+        const rotorLeaf = document.createElement("div");
+        const rotorLeafRear = document.createElement("figure");
+        const rotorLeafFront = document.createElement("figure");
+        const rotorTop = document.createElement("div");
+        const rotorBottom = document.createElement("div");
         rotor.className = "rotor";
         rotorLeaf.className = "rotor-leaf";
         rotorLeafRear.className = "rotor-leaf-rear";
         rotorLeafFront.className = "rotor-leaf-front";
         rotorTop.className = "rotor-top";
         rotorBottom.className = "rotor-bottom";
-        rotorLeafRear.textContent = v;
-        rotorTop.textContent = v;
-        rotorBottom.textContent = v;
+        rotorLeafRear.textContent = v.toString();
+        rotorTop.textContent = v.toString();
+        rotorBottom.textContent = v.toString();
         appendChildren(rotor, [rotorLeaf, rotorTop, rotorBottom]);
         appendChildren(rotorLeaf, [rotorLeafRear, rotorLeafFront]);
         return rotor;
@@ -324,24 +345,24 @@ export class FlipDown {
             el.textContent = this.prevClockValuesAsString[i];
         });
 
-        this.rotorBottom.forEach((el, i) => {
+        this.rotorBottoms.forEach((el, i) => {
             el.textContent = this.prevClockValuesAsString[i];
         });
 
-        function rotorTopFlip() {
-            this.rotorTop.forEach((el, i) => {
+        const rotorTopFlip = () => {
+            this.rotorTops.forEach((el, i) => {
                 if (el.textContent != this.clockValuesAsString[i]) {
                     el.textContent = this.clockValuesAsString[i];
                 }
             });
-        }
+        };
 
-        function rotorLeafRearFlip() {
+        const rotorLeafRearFlip = () => {
             this.rotorLeafRear.forEach((el, i) => {
                 if (el.textContent != this.clockValuesAsString[i]) {
                     el.textContent = this.clockValuesAsString[i];
                     el.parentElement.classList.add("flipped");
-                    var flip = setInterval(
+                    const flip = setInterval(
                         function () {
                             el.parentElement.classList.remove("flipped");
                             clearInterval(flip);
@@ -350,15 +371,15 @@ export class FlipDown {
                     );
                 }
             });
-        }
+        };
 
         // Init
         if (!init) {
-            setTimeout(rotorTopFlip.bind(this), 500);
-            setTimeout(rotorLeafRearFlip.bind(this), 500);
+            setTimeout(rotorTopFlip, 500);
+            setTimeout(rotorLeafRearFlip, 500);
         } else {
-            rotorTopFlip.call(this);
-            rotorLeafRearFlip.call(this);
+            rotorTopFlip();
+            rotorLeafRearFlip();
         }
 
         // Save a copy of clock values for next tick
