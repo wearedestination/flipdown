@@ -1,0 +1,31 @@
+/* Font styles */
+.flipdown.flipdown__theme-light {
+    font-family: sans-serif;
+    font-weight: bold;
+}
+/* Rotor group headings */
+.flipdown.flipdown__theme-light .rotor-group-heading:before {
+    color: #eeeeee;
+}
+/* Delimeters */
+.flipdown.flipdown__theme-light .rotor-group:nth-child(n + 2):nth-child(-n + 3):before,
+.flipdown.flipdown__theme-light .rotor-group:nth-child(n + 2):nth-child(-n + 3):after {
+    background-color: #dddddd;
+}
+/* Rotor tops */
+.flipdown.flipdown__theme-light .rotor,
+.flipdown.flipdown__theme-light .rotor-top,
+.flipdown.flipdown__theme-light .rotor-leaf-front {
+    color: #222222;
+    background-color: #dddddd;
+}
+/* Rotor bottoms */
+.flipdown.flipdown__theme-light .rotor-bottom,
+.flipdown.flipdown__theme-light .rotor-leaf-rear {
+    color: #333333;
+    background-color: #eeeeee;
+}
+/* Hinge */
+.flipdown.flipdown__theme-light .rotor:after {
+    border-top: solid 1px #222222;
+}
