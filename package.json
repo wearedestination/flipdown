@@ -1,6 +1,6 @@
 {
     "name": "@destination/flipdown",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "description": "A lightweight and performant flip styled countdown clock",
     "homepage": "https://github.com/wearedestination/flipdown#readme",
     "bugs": {
