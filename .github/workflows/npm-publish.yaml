@@ -10,19 +10,17 @@ jobs:
         runs-on: ubuntu-22.04
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
                   node-version: "20.x"
                   registry-url: https://registry.npmjs.org/
-            - run: |
-                npm ci
-                npm run build
 
-            - name: Prettier
-              run: npm run prettier:check
+            - run: npm ci
+            - run: npm run prettier:check
+            - run: npm run build
 
             - name: Version check
               run: |
